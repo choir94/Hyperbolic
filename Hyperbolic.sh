@@ -36,6 +36,42 @@ if [ "$MODE" != "1" ] && [ "$MODE" != "2" ]; then
     exit 1
 fi
 
+# Pilihan kategori questions file
+echo -e "${MAGENTA}=== Pilih kategori file pertanyaan ===${NC}"
+echo -e "${TEAL}1) Sejarah${NC}"
+echo -e "${TEAL}2) Hukum${NC}"
+echo -e "${TEAL}3) Filsafat${NC}"
+echo -e "${TEAL}4) Blockchain${NC}"
+echo -e "${WHITE}>>> Masukkan pilihan (1-4):${NC}"
+read -r CATEGORY
+
+case "$CATEGORY" in
+    1)
+        QUESTIONS_URL="https://raw.githubusercontent.com/choir94/Hyperbolic/refs/heads/main/sejarah.txt"
+        QUESTIONS_FILE="sejarah.txt"
+        CATEGORY_NAME="Sejarah"
+        ;;
+    2)
+        QUESTIONS_URL="https://raw.githubusercontent.com/choir94/Hyperbolic/refs/heads/main/hukum.txt"
+        QUESTIONS_FILE="hukum.txt"
+        CATEGORY_NAME="Hukum"
+        ;;
+    3)
+        QUESTIONS_URL="https://raw.githubusercontent.com/choir94/Hyperbolic/refs/heads/main/filsafat.txt"
+        QUESTIONS_FILE="filsafat.txt"
+        CATEGORY_NAME="Filsafat"
+        ;;
+    4)
+        QUESTIONS_URL="https://raw.githubusercontent.com/choir94/Hyperbolic/refs/heads/main/blockchain.txt"
+        QUESTIONS_FILE="blockchain.txt"
+        CATEGORY_NAME="Blockchain"
+        ;;
+    *)
+        echo -e "${ORANGE}>>> Pilihan tidak valid, harus 1-4${NC}"
+        exit 1
+        ;;
+esac
+
 # Instalasi bot
 echo -e "${MAGENTA}=== Memulai instalasi Hyperbolic Bot ===${NC}"
 
@@ -48,23 +84,28 @@ elif [ "$MODE" == "2" ]; then
     sudo apt install -y nodejs npm curl
 fi
 
-# 2. Membuat direktori proyek
+# 2. Membuat atau memeriksa direktori proyek
 PROJECT_DIR="$HOME/hyperbolic"
 if [ -d "$PROJECT_DIR" ]; then
-    echo -e "${ORANGE}>>> Direktori $PROJECT_DIR sudah ada, dibersihkan...${NC}"
-    rm -rf "$PROJECT_DIR"
+    echo -e "${ORANGE}>>> Direktori $PROJECT_DIR sudah ada, akan diperbarui...${NC}"
+    if [ "$MODE" == "1" ] && [ -f "$PROJECT_DIR/hyper_bot.js" ]; then
+        echo -e "${ORANGE}>>> Peringatan: Direktori sebelumnya menggunakan JavaScript, sekarang beralih ke Python${NC}"
+    elif [ "$MODE" == "2" ] && [ -f "$PROJECT_DIR/hyper_bot.py" ]; then
+        echo -e "${ORANGE}>>> Peringatan: Direktori sebelumnya menggunakan Python, sekarang beralih ke JavaScript${NC}"
+    fi
+else
+    mkdir -p "$PROJECT_DIR" || {
+        echo -e "${ORANGE}>>> Gagal membuat direktori $PROJECT_DIR${NC}"
+        exit 1
+    }
 fi
-mkdir -p "$PROJECT_DIR" || {
-    echo -e "${ORANGE}>>> Gagal membuat direktori $PROJECT_DIR${NC}"
-    exit 1
-}
 cd "$PROJECT_DIR" || {
     echo -e "${ORANGE}>>> Gagal masuk ke $PROJECT_DIR${NC}"
     exit 1
 }
 
-# 3. Mengatur lingkungan berdasarkan mode
-if [ "$MODE" == "1" ]; then
+# 3. Mengatur lingkungan berdasarkan mode (hanya jika belum ada)
+if [ "$MODE" == "1" ] && [ ! -d "$PROJECT_DIR/venv" ]; then
     echo -e "${LIME}>>> Membuat lingkungan virtual Python...${NC}"
     python3 -m venv venv || {
         echo -e "${ORANGE}>>> Gagal membuat lingkungan virtual${NC}"
@@ -74,7 +115,7 @@ if [ "$MODE" == "1" ]; then
     pip install --upgrade pip
     pip install requests
     deactivate
-elif [ "$MODE" == "2" ]; then
+elif [ "$MODE" == "2" ] && [ ! -f "$PROJECT_DIR/package.json" ]; then
     echo -e "${LIME}>>> Memastikan Node.js siap...${NC}"
     npm init -y >/dev/null 2>&1
     npm install axios >/dev/null 2>&1 || {
@@ -83,15 +124,15 @@ elif [ "$MODE" == "2" ]; then
     }
 fi
 
-# 4. Mengunduh file bot berdasarkan mode
-if [ "$MODE" == "1" ]; then
+# 4. Mengunduh file bot berdasarkan mode (hanya jika belum ada)
+if [ "$MODE" == "1" ] && [ ! -f "$PROJECT_DIR/hyper_bot.py" ]; then
     BOT_URL="https://raw.githubusercontent.com/choir94/Hyperbolic/refs/heads/main/hyper_bot.py"
     echo -e "${LIME}>>> Mengunduh hyper_bot.py...${NC}"
     curl -fsSL -o hyper_bot.py "$BOT_URL" || {
         echo -e "${ORANGE}>>> Gagal mengunduh hyper_bot.py${NC}"
         exit 1
     }
-elif [ "$MODE" == "2" ]; then
+elif [ "$MODE" == "2" ] && [ ! -f "$PROJECT_DIR/hyper_bot.js" ]; then
     BOT_URL="https://raw.githubusercontent.com/choir94/Hyperbolic/refs/heads/main/hyper_bot.js"
     echo -e "${LIME}>>> Mengunduh hyper_bot.js...${NC}"
     curl -fsSL -o hyper_bot.js "$BOT_URL" || {
@@ -100,37 +141,41 @@ elif [ "$MODE" == "2" ]; then
     }
 fi
 
-# 5. Meminta dan mengganti API key
-echo -e "${WHITE}>>> Masukkan kunci API Hyperbolic Anda:${NC}"
+# 5. Meminta dan mengganti API key (hanya jika belum diganti)
+echo -e "${WHITE}>>> Masukkan kunci API Hyperbolic Anda (kosongkan jika sudah ada):${NC}"
 read -r USER_API_KEY
-if [ -z "$USER_API_KEY" ]; then
-    echo -e "${ORANGE}>>> Kunci API tidak boleh kosong${NC}"
-    exit 1
-fi
-if [ "$MODE" == "1" ]; then
-    sed -i "s/HYPERBOLIC_API_KEY = \"\$API_KEY\"/HYPERBOLIC_API_KEY = \"$USER_API_KEY\"/" hyper_bot.py || {
-        echo -e "${ORANGE}>>> Gagal mengganti kunci API${NC}"
-        exit 1
-    }
-elif [ "$MODE" == "2" ]; then
-    sed -i "s/HYPERBOLIC_API_KEY = \"\$API_KEY\"/HYPERBOLIC_API_KEY = \"$USER_API_KEY\"/" hyper_bot.js || {
-        echo -e "${ORANGE}>>> Gagal mengganti kunci API${NC}"
-        exit 1
-    }
+if [ -n "$USER_API_KEY" ]; then
+    if [ "$MODE" == "1" ]; then
+        sed -i "s/HYPERBOLIC_API_KEY = \"\$API_KEY\"/HYPERBOLIC_API_KEY = \"$USER_API_KEY\"/" hyper_bot.py || {
+            echo -e "${ORANGE}>>> Gagal mengganti kunci API${NC}"
+            exit 1
+        }
+    elif [ "$MODE" == "2" ]; then
+        sed -i "s/HYPERBOLIC_API_KEY = \"\$API_KEY\"/HYPERBOLIC_API_KEY = \"$USER_API_KEY\"/" hyper_bot.js || {
+            echo -e "${ORANGE}>>> Gagal mengganti kunci API${NC}"
+            exit 1
+        }
+    fi
 fi
 
-# 6. Mengunduh file questions.txt
-QUESTIONS_URL="https://raw.githubusercontent.com/choir94/Hyperbolic/refs/heads/main/question.txt"
-echo -e "${LIME}>>> Mengunduh question.txt...${NC}"
-curl -fsSL -o questions.txt "$QUESTIONS_URL" || {
-    echo -e "${ORANGE}>>> Gagal mengunduh question.txt${NC}"
+# 6. Menghapus file pertanyaan lama dan mengunduh yang baru
+echo -e "${LIME}>>> Menghapus file pertanyaan lama...${NC}"
+rm -f "$PROJECT_DIR"/*.txt
+echo -e "${LIME}>>> Mengunduh $QUESTIONS_FILE untuk kategori $CATEGORY_NAME...${NC}"
+curl -fsSL -o "$QUESTIONS_FILE" "$QUESTIONS_URL" || {
+    echo -e "${ORANGE}>>> Gagal mengunduh $QUESTIONS_FILE${NC}"
     exit 1
 }
 
-# 7. Membuat layanan systemd berdasarkan mode
+# 7. Membuat atau memperbarui layanan systemd berdasarkan mode
 USERNAME=$(whoami)
 HOME_DIR=$(eval echo ~"$USERNAME")
 SERVICE_FILE="/etc/systemd/system/hyper-bot.service"
+
+if systemctl is-active --quiet hyper-bot.service; then
+    echo -e "${LIME}>>> Menghentikan layanan yang sedang berjalan...${NC}"
+    sudo systemctl stop hyper-bot.service
+fi
 
 echo -e "${LIME}>>> Mengatur layanan systemd...${NC}"
 if [ "$MODE" == "1" ]; then
@@ -142,7 +187,7 @@ After=network.target
 [Service]
 User=$USERNAME
 WorkingDirectory=$HOME_DIR/hyperbolic
-ExecStart=$HOME_DIR/hyperbolic/venv/bin/python $HOME_DIR/hyperbolic/hyper_bot.py
+ExecStart=$HOME_DIR/hyperbolic/venv/bin/python $HOME_DIR/hyperbolic/hyper_bot.py $QUESTIONS_FILE
 Restart=always
 Environment=PATH=$HOME_DIR/hyperbolic/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 
@@ -161,7 +206,7 @@ After=network.target
 [Service]
 User=$USERNAME
 WorkingDirectory=$HOME_DIR/hyperbolic
-ExecStart=/usr/bin/node $HOME_DIR/hyperbolic/hyper_bot.js
+ExecStart=/usr/bin/node $HOME_DIR/hyperbolic/hyper_bot.js $QUESTIONS_FILE
 Restart=always
 Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 
