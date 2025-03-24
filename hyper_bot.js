@@ -1,61 +1,68 @@
-import time
-import requests
-import logging
+const fs = require('fs');
+const axios = require('axios');
 
-# Hyperbolic API configuration
-HYPERBOLIC_API_URL = "https://api.hyperbolic.xyz/v1/chat/completions"
-HYPERBOLIC_API_KEY = "$API_KEY"  # Replace with your API key
-MODEL = "meta-llama/Llama-3.3-70B-Instruct"  # Or specify the desired model
-MAX_TOKENS = 2048
-TEMPERATURE = 0.7
-TOP_P = 0.9
-DELAY_BETWEEN_QUESTIONS = 30  # Delay between questions in seconds
+// Hyperbolic API configuration
+const HYPERBOLIC_API_URL = "https://api.hyperbolic.xyz/v1/chat/completions";
+const HYPERBOLIC_API_KEY = "$API_KEY"; // Replaced by Bash script
+const MODEL = "meta-llama/Llama-3.3-70B-Instruct";
+const MAX_TOKENS = 2048;
+const TEMPERATURE = 0.7;
+const TOP_P = 0.9;
+const DELAY_BETWEEN_QUESTIONS = 30 * 1000; // Delay in milliseconds
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+const logger = {
+    info: console.log,
+    error: console.error
+};
 
-def get_response(question: str) -> str:
-    headers = {
+async function getResponse(question) {
+    const headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {HYPERBOLIC_API_KEY}"
+        "Authorization": `Bearer ${HYPERBOLIC_API_KEY}`
+    };
+    const data = {
+        messages: [{ role: "user", content: question }],
+        model: MODEL,
+        max_tokens: MAX_TOKENS,
+        temperature: TEMPERATURE,
+        top_p: TOP_P
+    };
+    try {
+        const response = await axios.post(HYPERBOLIC_API_URL, data, { headers, timeout: 30000 });
+        return response.data.choices[0].message.content || "No answer";
+    } catch (error) {
+        throw error;
     }
-    data = {
-        "messages": [{"role": "user", "content": question}],
-        "model": MODEL,
-        "max_tokens": MAX_TOKENS,
-        "temperature": TEMPERATURE,
-        "top_p": TOP_P
+}
+
+async function main() {
+    let questions;
+    try {
+        const content = fs.readFileSync("questions.txt", "utf-8");
+        questions = content.split('\n').map(line => line.trim()).filter(line => line);
+    } catch (error) {
+        logger.error(`Error reading the questions.txt file: ${error}`);
+        return;
     }
-    response = requests.post(HYPERBOLIC_API_URL, headers=headers, json=data, timeout=30)
-    response.raise_for_status()
-    json_response = response.json()
-    # Assuming the response structure is similar to the OpenAI API:
-    return json_response.get("choices", [{}])[0].get("message", {}).get("content", "No answer")
 
-def main():
-    # Reading questions from the "questions.txt" file
-    try:
-        with open("questions.txt", "r", encoding="utf-8") as f:
-            questions = [line.strip() for line in f if line.strip()]
-    except Exception as e:
-        logger.error(f"Error reading the questions.txt file: {e}")
-        return
+    if (!questions.length) {
+        logger.error("The questions.txt file contains no questions.");
+        return;
+    }
 
-    if not questions:
-        logger.error("The questions.txt file contains no questions.")
-        return
+    let index = 0;
+    while (true) {
+        const question = questions[index];
+        logger.info(`Question #${index + 1}: ${question}`);
+        try {
+            const answer = await getResponse(question);
+            logger.info(`Answer: ${answer}`);
+        } catch (error) {
+            logger.error(`Error retrieving answer for question: ${question}\n${error}`);
+        }
+        index = (index + 1) % questions.length;
+        await new Promise(resolve => setTimeout(resolve, DELAY_BETWEEN_QUESTIONS));
+    }
+}
 
-    index = 0
-    while True:
-        question = questions[index]
-        logger.info(f"Question #{index+1}: {question}")
-        try:
-            answer = get_response(question)
-            logger.info(f"Answer: {answer}")
-        except Exception as e:
-            logger.error(f"Error retrieving answer for question: {question}\n{e}")
-        index = (index + 1) % len(questions)
-        time.sleep(DELAY_BETWEEN_QUESTIONS)
-
-if __name__ == "__main__":
-    main()
+main().catch(error => logger.error(`Main error: ${error}`));
