@@ -1,0 +1,100 @@
+1. How did Thales of Miletus explain the origin of the universe with water as the fundamental element?
+2. What did Anaximander mean by "Apeiron" as the primal principle of all things?
+3. How did Heraclitus view change as the core of reality with the concept of "Logos"?
+4. Why did Pythagoras consider numbers the basis of all reality?
+5. What is the difference between Parmenides' view of "being" and Heraclitus' view of "becoming"?
+6. How did Empedocles combine the four elements (water, air, fire, earth) with love and strife?
+7. What did Anaxagoras mean by "Nous" as the mover of the cosmos?
+8. How did Socrates use the dialectical method to seek truth?
+9. Why did Plato consider the world of Forms more real than the sensory world?
+10. What is the relationship between Plato’s "Form of the Good" and the concept of justice?
+11. How did Aristotle define "substance" in his metaphysics?
+12. What did Aristotle mean by "final cause" in his theory of causation?
+13. How did Epicurus connect happiness with the avoidance of pain?
+14. Why did Stoicism emphasize acceptance of fate through virtue?
+15. What is the difference between Pyrrho’s skepticism and Academic skepticism?
+16. How did Plotinus develop the concept of "the One" in Neoplatonism?
+17. What role does logos play in Stoic philosophy compared to early Christian philosophy?
+18. How did Augustine integrate Plato’s thought with Christian theology?
+19. What did Boethius mean by the "wheel of fortune" in Consolation of Philosophy?
+20. How did Anselm prove God’s existence with the ontological argument?
+21. Why did Thomas Aquinas distinguish between essence and existence?
+22. How did Aquinas use Aristotle to support Christian theology?
+23. What did Duns Scotus mean by "haecceity" or "thisness"?
+24. How did William of Ockham reject universals in his nominalism?
+25. Why did Machiavelli separate ethics from politics in "The Prince"?
+26. How did Hobbes explain the social contract as a solution to the "state of nature"?
+27. What is the connection between Descartes’ rationalism and his method of systematic doubt?
+28. Why did Spinoza consider God and the universe as a single substance?
+29. How did Leibniz explain "monads" as the basic units of reality?
+30. What did Locke mean by "tabula rasa" in his epistemology?
+31. How did Berkeley refute materialism with his subjective idealism?
+32. Why did Hume doubt the certainty of cause-and-effect relationships?
+33. What is the difference between Kant’s categorical imperative and hypothetical imperative?
+34. How did Kant reconcile rationalism and empiricism in "Critique of Pure Reason"?
+35. What did Hegel mean by dialectics in the process of history?
+36. How does Hegel’s "Geist" contribute to the development of human consciousness?
+37. Why did Schopenhauer consider the will the essence of reality?
+38. How did Kierkegaard define the "leap of faith" in his existentialism?
+39. What is the difference between "existence" and "essence" according to Sartre?
+40. How did Nietzsche proclaim "God is dead" and its impact on morality?
+41. What did Nietzsche mean by the "will to power"?
+42. How did Marx explain alienation in capitalism?
+43. What is the relationship between Marx’s historical materialism and Hegel’s dialectics?
+44. How did Mill expand Bentham’s utilitarianism with the quality of pleasure?
+45. What did Peirce mean by pragmatism as a theory of meaning?
+46. How did James define truth in his pragmatism?
+47. What role does Husserl’s "phenomenology" play in understanding consciousness?
+48. How did Heidegger explain "Dasein" in "Being and Time"?
+49. What did Merleau-Ponty mean by the "lived body" in phenomenology?
+50. How did Wittgenstein shift from formal logic to "language games"?
+51. What is the difference between Wittgenstein’s "Tractatus" and "Philosophical Investigations"?
+52. How did Popper reject positivism with falsification?
+53. Why did Kuhn argue that science progresses through "paradigm shifts"?
+54. What did Quine mean by the "web of belief" in epistemology?
+55. How did Rawls use the "veil of ignorance" in his theory of justice?
+56. Why did Nozick oppose redistribution in his libertarian theory?
+57. What did Foucault mean by "power/knowledge" in his social analysis?
+58. How did Derrida deconstruct texts to reveal the ambiguity of meaning?
+59. What role does Baudrillard’s "simulacra" play in his postmodern critique?
+60. Why did Lyotard reject "grand narratives" in postmodernism?
+61. How do Plato and postmodernism differ in their views on truth?
+62. What is the relationship between Greek skepticism and postmodern relativism?
+63. How might Aristotle respond to postmodern critiques of metaphysics?
+64. Why did Greek philosophy emphasize logos while postmodernism doubts it?
+65. How would Kant evaluate Derrida’s deconstruction of rationality?
+66. What would Nietzsche say about postmodern moral relativism?
+67. How does Sartre’s existentialism align or conflict with postmodernism?
+68. What role does ethics play in Stoicism compared to modern nihilism?
+69. How might Aquinas counter Hume’s skepticism about causation?
+70. Why do Spinoza and Foucault differ in their views on power?
+71. What is "justice" according to Plato versus Rawls?
+72. How would Hegel and Marx assess Fukuyama’s "end of history"?
+73. What is the connection between Plato’s "Forms" and Leibniz’s "monads"?
+74. Why do Schopenhauer and Nietzsche differ in their views on the will?
+75. How do Descartes and Husserl approach consciousness differently?
+76. What would Aristotle say about Wittgenstein’s "language games"?
+77. How could Stoicism address Kierkegaard’s existential anxiety?
+78. Why do Locke and Berkeley differ in their understanding of perception?
+79. What role does "free will" play in Augustine’s philosophy versus Sartre’s?
+80. How might Epicurus respond to Mill’s utilitarianism?
+81. What is "truth" according to Parmenides versus Quine?
+82. How are Plotinus and Spinoza similar in their views on God?
+83. Why do Machiavelli and Hobbes differ in their theories of political power?
+84. What is the relationship between Heraclitus’ "logos" and Heidegger’s "Dasein"?
+85. How do Kant and Kuhn differ in their understanding of knowledge progression?
+86. Why are Nietzsche and Baudrillard critical of modern culture?
+87. What would Plato say about Baudrillard’s "simulacra"?
+88. How did Greek philosophy influence Foucault’s concept of the "subject"?
+89. Why do Hume and Derrida doubt the certainty of knowledge?
+90. What is the difference between Aristotle’s "virtue" and Foucault’s "power"?
+91. How might Socrates respond to Lyotard’s relativism?
+92. What is the connection between Anaxagoras’ "Nous" and Hegel’s "Geist"?
+93. Why do Stoicism and existentialism differ in their views on fate?
+94. How do Aquinas and Popper differ in their understanding of truth?
+95. What is "reality" according to Parmenides versus Baudrillard?
+96. How do Plato and Nietzsche differ in their views on art?
+97. Why do Kant and Heidegger differ in their understanding of time?
+98. What role does "belief" play in Augustine’s philosophy versus James’?
+99. How might Marx and Derrida evaluate modern capitalism?
+100. What would Socrates say about Lyotard’s "end of grand narratives"?
