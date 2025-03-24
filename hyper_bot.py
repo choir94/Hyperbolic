@@ -1,11 +1,12 @@
 import time
 import requests
 import logging
+import sys
 
 # Hyperbolic API configuration
 HYPERBOLIC_API_URL = "https://api.hyperbolic.xyz/v1/chat/completions"
-HYPERBOLIC_API_KEY = "$API_KEY"  # Replace with your API key
-MODEL = "meta-llama/Llama-3.3-70B-Instruct"  # Or specify the desired model
+HYPERBOLIC_API_KEY = "$API_KEY"  # Replaced by Bash script
+MODEL = "meta-llama/Llama-3.3-70B-Instruct"
 MAX_TOKENS = 2048
 TEMPERATURE = 0.7
 TOP_P = 0.9
@@ -29,21 +30,27 @@ def get_response(question: str) -> str:
     response = requests.post(HYPERBOLIC_API_URL, headers=headers, json=data, timeout=30)
     response.raise_for_status()
     json_response = response.json()
-    # Assuming the response structure is similar to the OpenAI API:
     return json_response.get("choices", [{}])[0].get("message", {}).get("content", "No answer")
 
 def main():
-    # Reading questions from the "questions.txt" file
+    # Check if filename is provided as argument
+    if len(sys.argv) < 2:
+        logger.error("No questions file provided. Usage: python hyper_bot.py <questions_file>")
+        sys.exit(1)
+    
+    questions_file = sys.argv[1]
+    
+    # Reading questions from the provided file
     try:
-        with open("questions.txt", "r", encoding="utf-8") as f:
+        with open(questions_file, "r", encoding="utf-8") as f:
             questions = [line.strip() for line in f if line.strip()]
     except Exception as e:
-        logger.error(f"Error reading the questions.txt file: {e}")
-        return
+        logger.error(f"Error reading the file {questions_file}: {e}")
+        sys.exit(1)
 
     if not questions:
-        logger.error("The questions.txt file contains no questions.")
-        return
+        logger.error(f"The file {questions_file} contains no questions.")
+        sys.exit(1)
 
     index = 0
     while True:
