@@ -36,18 +36,26 @@ async function getResponse(question) {
 }
 
 async function main() {
+    // Check if filename is provided as argument
+    if (process.argv.length < 3) {
+        logger.error("No questions file provided. Usage: node hyper_bot.js <questions_file>");
+        process.exit(1);
+    }
+
+    const questionsFile = process.argv[2];
+
     let questions;
     try {
-        const content = fs.readFileSync("questions.txt", "utf-8");
+        const content = fs.readFileSync(questionsFile, "utf-8");
         questions = content.split('\n').map(line => line.trim()).filter(line => line);
     } catch (error) {
-        logger.error(`Error reading the questions.txt file: ${error}`);
-        return;
+        logger.error(`Error reading the file ${questionsFile}: ${error}`);
+        process.exit(1);
     }
 
     if (!questions.length) {
-        logger.error("The questions.txt file contains no questions.");
-        return;
+        logger.error(`The file ${questionsFile} contains no questions.`);
+        process.exit(1);
     }
 
     let index = 0;
